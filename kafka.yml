@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: yes
+
+  vars:
+    ansible_connection: local
+
+  tasks:
+  - name: Set up Kafka
+    community.docker.docker_compose:
+      project_src: kafka

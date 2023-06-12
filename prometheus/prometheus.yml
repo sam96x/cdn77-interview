@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "Prometheus"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  ["localhost:9090"]
+  - job_name: "Nginx server"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  ["nginx-exporter:9913"]
+  - job_name: "Zookeeper"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  ["zookeeper-exporter:9144"]
+  - job_name: "Kafka"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  ["kafka-exporter:9308"]

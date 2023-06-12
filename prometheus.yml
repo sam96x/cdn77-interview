@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: yes
+
+  vars:
+    ansible_connection: local
+
+  tasks:
+  - name: Set up Prometheus
+    community.docker.docker_compose:
+      project_src: prometheus
+
