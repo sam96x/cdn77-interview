@@ -1,0 +1,14 @@
+- name: Get a list of all running containers
+  docker_host_info:
+    containers: True
+  register: docker_info
+- name: Stop all running containers
+  docker_container:
+    name: '{{ item.Names[0] | regex_replace("^cdn77*", "") }}'
+    state: stopped
+  loop: '{{ docker_info.containers }}'
+- name: Deleted all running containers
+  docker_container:
+    name: '{{ item.Names[0] | regex_replace("^cdn77*", "") }}'
+    state: absent
+  loop: '{{ docker_info.containers }}'

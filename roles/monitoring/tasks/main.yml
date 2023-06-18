@@ -1,0 +1,17 @@
+- name: Set up Prometheus
+  community.docker.docker_container:
+    name: cdn77-prometheus
+    image: prom/prometheus
+    volumes:
+      - ./../templates/prometheus.yml:/etc/prometheus/prometheus.yml
+    # command:
+    #   - '--config.file=/etc/prometheus-custom/prometheus.yml'
+    ports:
+      - '{{ prom_port_1 }}:{{ prom_port_2 }}'
+- name: Set up Grafana
+  community.docker.docker_container:
+    name: cdn77-grafana
+    image: '{{ grafana_image }}'
+    ports:
+      - '{{ grafana_port_1 }}:{{ grafana_port_2 }}'
+    command: grafana-cli plugins install hamedkarbasi93-kafka-datasource

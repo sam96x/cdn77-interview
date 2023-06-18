@@ -1,0 +1,46 @@
+- name: Create network
+  community.docker.docker_network:
+    name: Kafka
+- name: Set up Zookeeper   
+  community.docker.docker_container:
+    name: cdn77-zookeeper
+    image: '{{ zookeeper_image }}'
+    ports:
+      - '{{ zookeeper_port_1 }}:{{ zookeeper_port_2 }}'
+    networks: 
+      - name: Kafka
+    env:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+- name: Set up Kafka
+  community.docker.docker_container:
+    name: cdn77-kafka
+    image: '{{ kafka_image }}'
+    ports: 
+      - '{{ kafka_port_1 }}:{{ kafka_port_2 }}'
+    networks:
+      - name: Kafka
+    env:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_ENABLE_KRAFT: "no"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: "cdn77-zookeeper:2181"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092"
+- name: Set up Kafka exporter
+  community.docker.docker_container:
+    name: cdn77-kafka-exporter
+    image: '{{ kafka_exporter_image }}'
+    ports: 
+      - '{{ kafka_exporter_port_1 }}:{{ kafka_exporter_port_2 }}'
+    networks:
+      - name: Kafka
+    command: --kafka.server=cdn77-kafka:9092 --kafka.server=cdn77-kafka:9092
+    restart: "yes"
+- name: Set up Zookeeper exporter
+  community.docker.docker_container:
+    name: cdn77-zookeeper-exporter
+    image: '{{ zookeeper_image}}'
+    command: -zk-host string="cdn-zookeeper" --timeout=5
+    networks:
+      - name: Kafka
+    ports: 
+      - '{{ zookeeper_exporter_port_1}}:{{ zookeeper_exporter_port_2 }}'

@@ -1,0 +1,12 @@
+nginx_image: debian
+nginx_network: cdn77-nginx-network
+
+nginx_1_port_1: 80
+nginx_1_port_2: 80
+
+nginx_2_port_1: 8081
+nginx_2_port_2: 8081
+
+nginx_exporter_image: sophos/nginx-vts-exporter
+nginx_exporter_port_1: 9913 
+nginx_exporter_port_2: 9913

@@ -1,0 +1,14 @@
+- name: Create Docker network
+  docker_network:
+    name: '{{ network_name }}'
+- name: Get Docker container names
+  shell: docker ps -a --format "{{'{{'}}.Names{{'}}'}}"
+  register: container_names
+- name: Connect containers to network
+  docker_network:
+    name: '{{ network_name }}'
+    connected: 
+    - "{{ item }}"
+    appends: yes
+  loop: "{{ container_names.stdout_lines }}"
+  when: item.startswith('cdn77')

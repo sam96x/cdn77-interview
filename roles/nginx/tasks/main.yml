@@ -1,0 +1,45 @@
+
+- name: Create a network
+  docker_network:
+    name: '{{ nginx_network }}'
+- name: Set up Nginx server 1
+  community.docker.docker_container:
+    name: cdn77-nginx-1
+    image:  '{{ nginx_image }}'
+    command: ["bash", "-c" , 
+      "apt-get update -y && 
+      apt-get install -y nginx --option=Dpkg::Options::=--force-confdef && 
+      nginx -g 'daemon off;'"]
+    volumes:
+    - ./../templates/nginx-1/default:/etc/nginx/sites-available/default
+    - ./../templates/html/:/var/www/html
+    networks:
+    - name: '{{ nginx_network }}'
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    ports:
+    - '{{ nginx_1_port_1 }}:{{ nginx_1_port_2 }}'
+- name: Set up Nginx server 2 
+  community.docker.docker_container:
+    name: cdn77-nginx-2
+    image: '{{ nginx_image }}'
+    command: ["bash", "-c" , 
+      "apt-get update -y && 
+      apt-get install -y nginx --option=Dpkg::Options::=--force-confdef && 
+      nginx -g 'daemon off;'"]
+    volumes:
+      - ../templates/nginx-2/default.conf:/etc/nginx/sites-available/default.conf
+    networks:
+    - name: '{{ nginx_network }}'
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    ports:
+      - '{{ nginx_2_port_1 }}:{{ nginx_2_port_2 }}'
+- name: Set up Nginx exporter
+  community.docker.docker_container:
+    name: cdn77-nginx-exporter
+    image: '{{ nginx_exporter_image }}'
+    ports:
+      - '{{ nginx_exporter_port_1 }}:{{ nginx_exporter_port_2 }}'
+    networks:
+    - name: '{{ nginx_network }}'

@@ -1,0 +1,7 @@
+prom_image: prom/prometheus
+prom_port_1: 9090
+prom_port_2: 9090
+
+grafana_image: grafana/grafana
+grafana_port_1: 3000
+grafana_port_2: 3000

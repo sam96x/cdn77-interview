@@ -1,0 +1,17 @@
+kafka_network: cdn77_kafka_network
+
+kafka_image: bitnami/kafka
+kafka_port_1: 9092
+kafka_port_2: 9092
+
+kafka_exporter_image: bitnami/kafka-exporter
+kafka_exporter_port_1: 9308
+kafka_exporter_port_2: 9308
+
+zookeeper_image: bitnami/zookeeper
+zookeeper_port_1: 2181
+zookeeper_port_2: 2181
+
+zookeeper_exporter_image: bitnami/zookeeper-exporter
+zookeeper_exporter_port_1: 9144
+zookeeper_exporter_port_2: 9144
