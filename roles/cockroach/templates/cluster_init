@@ -2,4 +2,4 @@
 
 cockroach init --insecure --host=cdn77-cockroach-container-1:26257
 
-cockroach workload init ycsb
+cockroach workload init ycsb 'postgresql://root@cdn77-cockroach-container-1:26257?sslmode=disable'
