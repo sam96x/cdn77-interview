@@ -4,7 +4,10 @@
 - name: Create network
   community.docker.docker_network:
     name: '{{ monitoring_network }}'
-
+    attachable: yes
+- name: Create Prometheus volume
+  community.docker.docker_volume:
+    name: '{{ prometheus_volume }}'
 - name: Set up Prometheus
   community.docker.docker_container:
     name: '{{ prometheus_container }}'
@@ -12,14 +15,14 @@
     networks:
       - name: '{{ monitoring_network }}'
     ports:
-      - '{{ prom_port_1 }}:{{ prom_port_2 }}'
-    restart: true
+      - '{{ prometheus_port_1 }}:{{ prometheus_port_2 }}'
+    restart: yes
     volumes:
       - '{{ role_path }}/templates/prometheus/rules:/etc/prometheus/rules'
       - '{{ role_path }}/templates/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
 - name: Create grafana volume
   community.docker.docker_volume:
-    name: grafana-data
+    name: '{{ grafana_volume }}'
 - name: Set up Grafana
   community.docker.docker_container:
     name: '{{ grafana_container }}'
@@ -28,7 +31,7 @@
       - name: '{{ monitoring_network }}'
     ports:
       - '{{ grafana_port_1 }}:{{ grafana_port_2 }}'
-    restart: true
+    restart: yes
     command: grafana-server -homepath /usr/share/grafana
     volumes:
       - '{{ role_path }}/templates/grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml'

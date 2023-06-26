@@ -1,0 +1,12 @@
+- name: Remove a volumes
+  docker_volume:
+    name: '{{ item }}'
+    state: absent
+  loop: 
+    - '{{ prometheus_volume }}'
+    - '{{ grafana_volume }}'
+    - '{{ alertmanager_volume }}'
+    - '{{ cockroach_1_volume }}'
+    - '{{ cockroach_2_volume }}'
+    - '{{ cockroach_3_volume }}'
+    - '{{ cockroach_4_volume }}'

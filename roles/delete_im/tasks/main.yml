@@ -1,0 +1,11 @@
+- name: Delete all images
+  community.docker.docker_image:
+    name: '{{ item }}'
+    state: absent
+  loop:
+    - '{{ nginx_image }}'
+    - '{{ nginx_exporter_image }}'
+    - '{{ prometheus_image }}'
+    - '{{ grafana_image }}'
+    - '{{ alertmanager_image }}'
+    - '{{ cockroach_image }}'

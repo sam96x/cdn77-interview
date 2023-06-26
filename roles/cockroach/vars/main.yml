@@ -1,5 +1,3 @@
-cockroach_network: '{{ container_prefix }}-cockroach-network'
-
 cockroach_1_port_1: 26257
 cockroach_1_port_2: 26257
 cockroach_1_port_3: 8080

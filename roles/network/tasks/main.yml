@@ -1,12 +1,12 @@
 - name: Create Docker network
   community.docker.docker_network:
-    name: '{{ network_name }}'
+    name: '{{ project_network }}'
 - name: Get Docker container names
   shell: docker ps -a --format "{{'{{'}}.Names{{'}}'}}"
   register: container_names
 - name: Connect containers to network
   community.docker.docker_network:
-    name: '{{ network_name }}'
+    name: '{{ project_network }}'
     connected: 
     - "{{ item }}"
     appends: yes
