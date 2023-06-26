@@ -7,8 +7,32 @@ Documents:
 * [task_solution.pdf](documents/task_solution.pdf) - Task solution
 
 ## Create infrastructure 
-`ansible-playbook --ask-become-pass install_docker.yml nginx.yml kafka.yml prometheus.yml`
+`ansible-playbook create_infrastructure.yml`
 
-## Delete infrastructure
+## Stop infrastructure
 
-`./stop_containers.sh`
+`ansible-playbook stop_infrastructure.yml`
+
+## SQL commands for CockroachDB nodes
+# node 1 
+
+`cockroach sql --insecure --host=cdn77-cockroach-container-1:26257 \
+--execute="SELECT count(*) FROM ycsb.public.usertable;"`
+
+# node 2
+
+`cockroach sql --insecure --host=cdn77-cockroach-container-2:26258 \
+--execute="SELECT count(*) FROM ycsb.public.usertable;"`
+
+`cockroach sql --insecure --host=cdn77-cockroach-container-1:26257 \
+--execute="INSERT INTO ycsb.public.usertable VALUES ('asdf', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test');"`
+
+# node 3
+
+`cockroach sql --insecure --host=cdn77-cockroach-container-3:26259 \
+--execute="SELECT count(*) FROM ycsb.public.usertable;"`
+
+# node 4
+
+`cockroach sql --insecure --host=cdn77-cockroach-container-4:26260 \
+--execute="SELECT count(*) FROM ycsb.public.usertable;"`

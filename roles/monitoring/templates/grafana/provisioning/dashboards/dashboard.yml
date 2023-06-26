@@ -1,0 +1,10 @@
+apiVersion: 1
+
+providers:
+  - name: 'Grafana'
+    org_id: 1
+    folder: 'Grafana'
+    type: "file"
+    editable: true
+    options:
+      folder: '/var/lib/grafana/dashboards/cockroach/'

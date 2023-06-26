@@ -1,14 +1,24 @@
-- name: Get a list of all running containers
-  docker_host_info:
-    containers: True
+- name: Get a list of all running containers and networks
+  community.docker.docker_host_info:
+    containers: true
   register: docker_info
+- name: Delete and disconnect networks
+  docker_network:
+    name: '{{ item }}'
+    state: absent
+    force: yes
+  loop:
+    - cdn77-monitoring-network
+    - cdn77-nginx-network
+    - cdn77-cockroach-network
+    - cdn77-network
 - name: Stop all running containers
-  docker_container:
+  community.docker.docker_container:
     name: '{{ item.Names[0] | regex_replace("^cdn77*", "") }}'
     state: stopped
   loop: '{{ docker_info.containers }}'
 - name: Deleted all running containers
-  docker_container:
+  community.docker.docker_container:
     name: '{{ item.Names[0] | regex_replace("^cdn77*", "") }}'
     state: absent
   loop: '{{ docker_info.containers }}'

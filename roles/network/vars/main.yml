@@ -1,0 +1,1 @@
+network_name: '{{ container_prefix }}-network'

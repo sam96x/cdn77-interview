@@ -1,0 +1,7 @@
+- hosts: localhost
+  gather_facts: yes
+
+  tasks:
+    - name: Set up Nginx using role
+      import_role:
+        name: delete

@@ -1,0 +1,50 @@
+# Ansible setup
+ansible_connection: local
+project_prefix: cdn77
+
+# Container names
+container_prefix: '{{ project_prefix }}'
+container_postfix: container
+
+nginx_1_container: '{{ container_prefix }}-nginx-1-{{ container_postfix }}'
+nginx_2_container: '{{ container_prefix }}-nginx-2-{{ container_postfix }}'
+nginx_exporter_container: '{{ container_prefix }}-nginx-exporter-{{ container_postfix }}'
+
+prometheus_container: '{{ container_prefix }}-prometheus-{{ container_postfix }}'
+grafana_container: '{{ container_prefix }}-grafana-{{ container_postfix }}'
+alertmanager_container: '{{ container_prefix }}-alertmanager-{{ container_postfix }}'
+
+kafka_container: '{{ container_prefix }}-kafka-{{ container_postfix }}'
+kafka_exporter_container: '{{ container_prefix }}-kafka-exporter-{{ container_postfix }}'
+zookeeper_container: '{{ container_prefix }}-zookeeper-{{ container_postfix }}'
+zookeeper_exporter_container: '{{ container_prefix }}-zookeeper-exporter-{{ container_postfix }}'
+
+cockroach_container: '{{ container_prefix }}-cockroach-{{ container_postfix }}'
+
+# Image names
+image_prefix: '{{ project_prefix }}'
+image_postfix: image
+
+nginx_image: '{{ image_prefix }}-nginx-{{ image_postfix }}'
+nginx_exporter_image: '{{ image_prefix }}-nginx-exporter-{{ image_postfix }}'
+
+prometheus_image: '{{ image_prefix }}-prometheus-{{ image_postfix }}'
+grafana_image: '{{ image_prefix }}-grafana-{{ image_postfix }}'
+alertmanager_image: '{{ container_prefix }}-alertmanager-{{ image_postfix }}'
+
+cockroach_image: '{{ image_prefix }}-cockroach-{{ image_postfix }}'
+
+# Volumes names
+# volume_prefix: '{{ project_prefix }}'
+# volume_postfix: volume
+
+# nginx_1_volume: '{{ volume_prefix}}-nginx-1-{{ volume_postfix }}'
+# nginx_2_volume: '{{ volume_prefix}}-nginx-2-{{ volume_postfix }}'
+
+# prometheus_volume: '{{ volume_prefix}}-prometheus-{{ volume_postfix }}'
+# grafana_volume: '{{ volume_prefix}}-grafana-{{ volume_postfix }}'
+# alertmanager_volume: '{{ volume_prefix }}-alertmanager-{{ volume_postfix }}'
+
+
+
+

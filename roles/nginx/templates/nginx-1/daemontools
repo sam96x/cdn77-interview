@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Install daemontools and csh
+apt-get install daemontools daemontools-run csh -y
+
+# Create directory and set permissions
+mkdir -p /etc/service/test
+chmod 1755 /etc/service/test
+
+# Move run file script
+cd /tmp
+chmod +x run
+cp run /etc/service/test/
+rm -rf run
+
+# Start svscanboot using csh
+/bin/csh -cf '/usr/bin/svscanboot &'

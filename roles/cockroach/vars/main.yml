@@ -1,0 +1,25 @@
+cockroach_network: '{{ container_prefix }}-cockroach-network'
+
+cockroach_1_port_1: 26257
+cockroach_1_port_2: 26257
+cockroach_1_port_3: 8080
+cockroach_1_port_4: 8080
+cockroach_1_num: 1
+
+cockroach_2_port_1: 26258
+cockroach_2_port_2: 26258
+cockroach_2_port_3: 8081
+cockroach_2_port_4: 8081
+cockroach_2_num: 2
+
+cockroach_3_port_1: 26259
+cockroach_3_port_2: 26259
+cockroach_3_port_3: 8082
+cockroach_3_port_4: 8082
+cockroach_3_num: 3
+
+cockroach_4_port_1: 26260
+cockroach_4_port_2: 26260
+cockroach_4_port_3: 8083
+cockroach_4_port_4: 8083
+cockroach_4_num: 4

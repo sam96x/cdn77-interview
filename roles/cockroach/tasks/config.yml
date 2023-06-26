@@ -1,0 +1,5 @@
+- name: Generate cluster_init from cluster_init.j2
+  template:
+    src: '{{ role_path }}/templates/cluster_init.j2'
+    dest: '{{ role_path }}/templates/cluster_init'
+    mode: '0755'
