@@ -1,0 +1,9 @@
+- name: Generate prometheus.yml from prometheus.yml.j2
+  template:
+    src: '{{ role_path }}/templates/prometheus/prometheus.yml.j2'
+    dest: '{{ role_path }}/templates/prometheus/prometheus.yml'
+
+- name: Generate datasource.yml from datasource.yml.j2
+  template:
+    src: '{{ role_path }}/templates/grafana/provisioning/datasources/datasource.yml.j2'
+    dest: '{{ role_path }}/templates/grafana/provisioning/datasources/datasource.yml'    

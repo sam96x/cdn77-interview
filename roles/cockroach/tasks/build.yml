@@ -1,0 +1,6 @@
+- name: Build Cockroach image
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates'
+    name: '{{ cockroach_image }}'
+    source: build

@@ -1,23 +1,23 @@
-- hosts: localhost
+- hosts: all
   gather_facts: yes
   become: true
 
-  vars: 
-    ansible_connection: local
+  vars_files: 
+    - ./group_vars/all.yml
 
   tasks:
     - name: Set up Docker
       import_role:
         name: docker
-    - name: Set up Monitoring using role
-      import_role:
-        name: monitoring
     - name: Set up Nginx using role
       import_role:
         name: nginx
-    - name: Set up Kafka using role
+    - name: Set up Monitoring using role
       import_role:
-        name: kafka
+        name: monitoring
+    - name: Set up Cockroach using role
+      import_role:
+        name: cockroach
     - name: Set up network using role
       import_role:
         name: network

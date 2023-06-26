@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cockroach init --insecure --host=cdn77-cockroach-container-1:26257
+
+apt-get install haproxy -y
+
+cockroach gen haproxy --insecure --host=cdn77-cockroach-container-1 --port=26257
+
+sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
+
+haproxy -f haproxy.cfg &
+
+cockroach workload init ycsb --splits=50 'postgresql://root@cdn77-cockroach-container-1:26000?sslmode=disable'

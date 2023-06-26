@@ -1,4 +1,0 @@
- datasources:
-  - name: Nginx exporter
-    url: http://cdn77-nginx-exporter:9913
-    editable: true

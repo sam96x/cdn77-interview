@@ -1,0 +1,10 @@
+monitoring_network: '{{ container_prefix }}-monitoring-network'
+
+prom_port_1: 9090
+prom_port_2: 9090
+
+grafana_port_1: 3000
+grafana_port_2: 3000
+
+alertmanager_port_1: 9093
+alertmanager_port_2: 9093

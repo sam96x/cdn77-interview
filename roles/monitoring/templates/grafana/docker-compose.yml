@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    volumes: 
+      - ./provisioning/:/etc/grafana/provisioning/
+      - ./provisioning/dashboards/dashboard.json:/var/lib/grafana/dashboards/cockroach/dashboard.json
+    environment: 
+      - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+    ports:
+      - "3000:3000"
