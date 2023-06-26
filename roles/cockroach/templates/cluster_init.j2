@@ -2,4 +2,4 @@
 
 cockroach init --insecure --host={{ cockroach_container }}-{{ cockroach_1_num }}:{{ cockroach_1_port_1 }}
 
-cockroach workload init ycsb
+cockroach workload init ycsb 'postgresql://root@{{ cockroach_container }}-1:{{ cockroach_1_port_1 }}?sslmode=disable'
