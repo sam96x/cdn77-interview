@@ -34,17 +34,29 @@ alertmanager_image: '{{ container_prefix }}-alertmanager-{{ image_postfix }}'
 
 cockroach_image: '{{ image_prefix }}-cockroach-{{ image_postfix }}'
 
+# Networks
+
+network_prefix: '{{ project_prefix }}'
+network_postfix: network
+
+cockroach_network: '{{ network_prefix }}-cockroach-{{ network_postfix }}'
+monitoring_network: '{{ network_prefix }}-monitoring-{{ network_postfix }}'
+nginx_network: '{{ network_prefix }}-nginx-{{ network_postfix }}'
+project_network: '{{ network_prefix }}-project-{{ network_postfix }}'
+
+
 # Volumes names
-# volume_prefix: '{{ project_prefix }}'
-# volume_postfix: volume
+volume_prefix: '{{ project_prefix }}'
+volume_postfix: volume
 
-# nginx_1_volume: '{{ volume_prefix}}-nginx-1-{{ volume_postfix }}'
-# nginx_2_volume: '{{ volume_prefix}}-nginx-2-{{ volume_postfix }}'
+prometheus_volume: '{{ volume_prefix}}-prometheus-{{ volume_postfix }}'
+grafana_volume: '{{ volume_prefix}}-grafana-{{ volume_postfix }}'
+alertmanager_volume: '{{ volume_prefix }}-alertmanager-{{ volume_postfix }}'
 
-# prometheus_volume: '{{ volume_prefix}}-prometheus-{{ volume_postfix }}'
-# grafana_volume: '{{ volume_prefix}}-grafana-{{ volume_postfix }}'
-# alertmanager_volume: '{{ volume_prefix }}-alertmanager-{{ volume_postfix }}'
-
+cockroach_1_volume: '{{ volume_prefix}}-cockroach-1-{{ volume_postfix }}'
+cockroach_2_volume: '{{ volume_prefix}}-cockroach-2-{{ volume_postfix }}'
+cockroach_3_volume: '{{ volume_prefix}}-cockroach-3-{{ volume_postfix }}'
+cockroach_4_volume: '{{ volume_prefix}}-cockroach-4-{{ volume_postfix }}'
 
 
 

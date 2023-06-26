@@ -4,4 +4,4 @@
   tasks:
     - name: Set up Nginx using role
       import_role:
-        name: delete
+        name: stop

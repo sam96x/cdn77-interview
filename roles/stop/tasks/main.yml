@@ -8,10 +8,10 @@
     state: absent
     force: yes
   loop:
-    - cdn77-monitoring-network
-    - cdn77-nginx-network
-    - cdn77-cockroach-network
-    - cdn77-network
+    - '{{ monitoring_network }}'
+    - '{{ nginx_network }}'
+    - '{{ cockroach_network }}'
+    - '{{ project_network }}'
 - name: Stop all running containers
   community.docker.docker_container:
     name: '{{ item.Names[0] | regex_replace("^cdn77*", "") }}'
