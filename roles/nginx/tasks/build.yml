@@ -1,0 +1,13 @@
+- name: Build Nginx 1 server
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates'
+    name: '{{ nginx_image }}'
+    source: build
+
+- name: Build Nginx 2 server
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates'
+    name: '{{ nginx_image }}'
+    source: build

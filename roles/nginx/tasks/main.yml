@@ -1,18 +1,18 @@
+- import_tasks: build.yml
+- import_tasks: config.yml
 
 - name: Create a network
   docker_network:
     name: '{{ nginx_network }}'
 - name: Set up Nginx server 1
   community.docker.docker_container:
-    name: cdn77-nginx-1
+    name: '{{ nginx_1_container }}'
     image:  '{{ nginx_image }}'
-    command: ["bash", "-c" , 
-      "apt-get update -y && 
-      apt-get install -y nginx --option=Dpkg::Options::=--force-confdef && 
-      nginx -g 'daemon off;'"]
     volumes:
-    - ./../templates/nginx-1/default:/etc/nginx/sites-available/default
-    - ./../templates/html/:/var/www/html
+      - '{{ role_path }}/templates/nginx-1/conf/nginx.conf:/etc/nginx/nginx.conf'
+      - '{{ role_path }}/templates/nginx-1/html/index.html:/var/www/html/index.html'
+      - '{{ role_path }}/templates/nginx-1/test.sh:/tmp/run'
+      - '{{ role_path }}/templates/nginx-1/daemontools:/bin/daemontools'
     networks:
     - name: '{{ nginx_network }}'
     env:
@@ -21,23 +21,27 @@
     - '{{ nginx_1_port_1 }}:{{ nginx_1_port_2 }}'
 - name: Set up Nginx server 2 
   community.docker.docker_container:
-    name: cdn77-nginx-2
+    name: '{{ nginx_2_container }}'
     image: '{{ nginx_image }}'
-    command: ["bash", "-c" , 
-      "apt-get update -y && 
-      apt-get install -y nginx --option=Dpkg::Options::=--force-confdef && 
-      nginx -g 'daemon off;'"]
     volumes:
-      - ../templates/nginx-2/default.conf:/etc/nginx/sites-available/default.conf
+      - '{{ role_path }}/templates/nginx-2/conf/nginx.conf:/etc/nginx/nginx.conf'
+      - '{{ role_path }}/templates/nginx-2/conf/localhost.crt:/etc/nginx/sites-available/localhost.crt'
+      - '{{ role_path }}/templates/nginx-2/conf/localhost.key:/etc/nginx/sites-available/localhost.key'
     networks:
     - name: '{{ nginx_network }}'
     env:
       DEBIAN_FRONTEND: noninteractive
     ports:
       - '{{ nginx_2_port_1 }}:{{ nginx_2_port_2 }}'
+      - '{{ nginx_2_port_3 }}:{{ nginx_2_port_4 }}'
+- name: Run command for run daemon tools
+  community.docker.docker_container_exec:
+    container: '{{ nginx_1_container }}'
+    command: /bin/daemontools
+  register: result
 - name: Set up Nginx exporter
   community.docker.docker_container:
-    name: cdn77-nginx-exporter
+    name: '{{ nginx_exporter_container }}'
     image: '{{ nginx_exporter_image }}'
     ports:
       - '{{ nginx_exporter_port_1 }}:{{ nginx_exporter_port_2 }}'

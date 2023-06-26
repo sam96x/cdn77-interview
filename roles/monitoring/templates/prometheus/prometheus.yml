@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+
+rule_files:
+- "rules/alerts.rules.yml"
+- "rules/aggregation.rules.yml"
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - "cdn77-alertmanager-container:9093"
+
+scrape_configs:
+  - job_name: "Prometheus"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  
+        - "localhost:9090"
+  - job_name: "Grafana"
+    metrics_path: /metrics
+    static_configs:
+      - targets:  
+        - "cdn77-grafana-container:3000"
+  - job_name: "Cockroach"
+    metrics_path: /_status/vars
+    static_configs:
+      - targets: 
+        - "cdn77-cockroach-container-1:8080"

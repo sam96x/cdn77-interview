@@ -1,0 +1,9 @@
+- name: Generate nginx.conf from nginx.conf.j2 for Nginx 1 server
+  template:
+    src: '{{ role_path }}/templates/nginx-1/conf/nginx.conf.j2'
+    dest: '{{ role_path }}/templates/nginx-1/conf/nginx.conf'
+
+- name: Generate nginx.conf from nginx.conf.j2 for Nginx 2 server
+  template:
+    src: '{{ role_path }}/templates/nginx-2/conf/nginx.conf.j2'
+    dest: '{{ role_path }}/templates/nginx-2/conf/nginx.conf'

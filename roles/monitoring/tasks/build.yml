@@ -1,0 +1,20 @@
+- name: Build Prometheus image
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates/prometheus'
+    name: '{{ prometheus_image }}'
+    source: build
+
+- name: Build Grafana image
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates/grafana'
+    name: '{{ grafana_image }}'
+    source: build
+
+- name: Build Alertmanager image
+  community.docker.docker_image:
+    build:
+      path: '{{ role_path }}/templates/alertmanager'
+    name: '{{ alertmanager_image }}'
+    source: build

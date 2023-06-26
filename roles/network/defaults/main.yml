@@ -1,2 +1,1 @@
-network_name: cdn77-network
-register: container_names
+network_name: '{{ container_prefix }}-network'

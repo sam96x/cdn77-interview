@@ -1,0 +1,39 @@
+- import_tasks: build.yml
+- import_tasks: config.yml
+
+- name: Create a network
+  docker_network:
+    name: '{{ cockroach_network }}'
+- name: Set up Cockroach nodes
+  community.docker.docker_container:
+    name: '{{ cockroach_container }}-{{ item.num }}'
+    image:  '{{ cockroach_image }}'
+    hostname: '{{ cockroach_container }}-{{ item.num }}'
+    networks:
+    - name: '{{ cockroach_network }}'
+    env:
+      DEBIAN_FRONTEND: noninteractive 
+    restart: true
+    command: > 
+      cockroach start 
+      --insecure
+      --advertise-addr={{ cockroach_container }}-{{ item.num }}:{{ item.port_1 }}
+      --http-addr={{ cockroach_container }}-{{ item.num }}:{{ item.port_3 }}
+      --listen-addr={{ cockroach_container }}-{{ item.num }}:{{ item.port_1 }}
+      --join={{ cockroach_container }}-{{ cockroach_1_num }}:{{ cockroach_1_port_1 }},{{ cockroach_container }}-{{ cockroach_2_num }}:{{ cockroach_2_port_1 }},{{ cockroach_container }}-{{ cockroach_3_num }}:{{ cockroach_3_port_1 }}
+    volumes: 
+      - '{{ role_path }}/templates/cluster_init:/bin/cluster_init'
+    ports:
+      - '{{ item.port_1 }}:{{ item.port_2 }}'
+      - '{{ item.port_3 }}:{{ item.port_4 }}'
+  loop: 
+    - { name: cockroach1, num: '{{ cockroach_1_num }}', port_1: '{{ cockroach_1_port_1 }}', port_2: '{{ cockroach_1_port_2 }}', port_3: '{{ cockroach_1_port_3 }}', port_4: '{{ cockroach_1_port_4 }}' }
+    - { name: cockroach2, num: '{{ cockroach_2_num }}', port_1: '{{ cockroach_2_port_1 }}', port_2: '{{ cockroach_2_port_2 }}', port_3: '{{ cockroach_2_port_3 }}', port_4: '{{ cockroach_2_port_4 }}' }
+    - { name: cockroach3, num: '{{ cockroach_3_num }}', port_1: '{{ cockroach_3_port_1 }}', port_2: '{{ cockroach_3_port_2 }}', port_3: '{{ cockroach_3_port_3 }}', port_4: '{{ cockroach_3_port_4 }}' }
+    - { name: cockroach4, num: '{{ cockroach_4_num }}', port_1: '{{ cockroach_4_port_1 }}', port_2: '{{ cockroach_4_port_2 }}', port_3: '{{ cockroach_4_port_3 }}', port_4: '{{ cockroach_4_port_4 }}' }
+    # - { name: cockroach5, num: 5, port_1: 26261, port_2: 26261, port_3: 8084, port_4: 8084 }
+    # - { name: cockroach1, num: 6, port_1: 26262, port_2: 26262, port_3: 8085, port_4: 8085 }
+- name: Add script for init cluster
+  community.docker.docker_container_exec:
+    container: '{{ cockroach_container }}-{{ cockroach_1_num }}'
+    command: /bin/cluster_init

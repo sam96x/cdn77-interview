@@ -1,17 +1,47 @@
+- import_tasks: config.yml
+- import_tasks: build.yml
+
+- name: Create network
+  community.docker.docker_network:
+    name: '{{ monitoring_network }}'
+
 - name: Set up Prometheus
   community.docker.docker_container:
-    name: cdn77-prometheus
-    image: prom/prometheus
-    volumes:
-      - ./../templates/prometheus.yml:/etc/prometheus/prometheus.yml
-    # command:
-    #   - '--config.file=/etc/prometheus-custom/prometheus.yml'
+    name: '{{ prometheus_container }}'
+    image: '{{ prometheus_image }}'
+    networks:
+      - name: '{{ monitoring_network }}'
     ports:
       - '{{ prom_port_1 }}:{{ prom_port_2 }}'
+    restart: true
+    volumes:
+      - '{{ role_path }}/templates/prometheus/rules:/etc/prometheus/rules'
+      - '{{ role_path }}/templates/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+- name: Create grafana volume
+  community.docker.docker_volume:
+    name: grafana-data
 - name: Set up Grafana
   community.docker.docker_container:
-    name: cdn77-grafana
+    name: '{{ grafana_container }}'
     image: '{{ grafana_image }}'
+    networks:
+      - name: '{{ monitoring_network }}'
     ports:
       - '{{ grafana_port_1 }}:{{ grafana_port_2 }}'
-    command: grafana-cli plugins install hamedkarbasi93-kafka-datasource
+    restart: true
+    command: grafana-server -homepath /usr/share/grafana
+    volumes:
+      - '{{ role_path }}/templates/grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml'
+      - '{{ role_path }}/templates/grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml'
+      - '{{ role_path }}/templates/grafana/provisioning/dashboards/dashboard.json:/var/lib/grafana/dashboards/cockroach/dashboard.json'
+    env: 
+       GF_PATHS_CONFIG: /etc/grafana/grafana.ini
+- name: Set up Alertmanager
+  community.docker.docker_container:
+    name: '{{ alertmanager_container }}'
+    image: '{{ alertmanager_image }}'
+    networks:
+      - name: '{{ monitoring_network }}'
+    ports:
+      - '{{ alertmanager_port_1 }}:{{ alertmanager_port_2 }}'
+    restart: true
